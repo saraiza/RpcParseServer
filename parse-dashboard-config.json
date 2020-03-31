@@ -1,0 +1,14 @@
+{
+  "apps": [{"...": "..."}],
+  "users": [
+    {
+      "user":"saraiza",
+      "pass":"slinky"
+    },
+    {
+      "user":"lab",
+      "pass":"labrat#"
+    }
+  ],
+  "useEncryptedPasswords": false
+}

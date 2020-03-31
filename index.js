@@ -38,7 +38,8 @@ var dashboard = new ParseDashboard({
       "masterKey": "myMasterKey",
       "appName": "MyApp"
     }
-  ]
+  ],
+  "trustProxy": 1
 }, options);
 
 var app = express();
