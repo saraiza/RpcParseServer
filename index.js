@@ -14,6 +14,7 @@ var serverUrlBase = process.env.SERVER_URL || "http://localhost"; // || 'https:/
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/dev';
 var appId = process.env.APP_ID || 'myAppId'
 var masterKey = process.env.MASTER_KEY || ''
+var allowHttp = process.env.ALLOW_HTTP || true
 
 
 // With the port appended
@@ -32,6 +33,7 @@ console.log(' serverUrlWithPort: ' + serverUrlWithPort);
 console.log(' databaseUri: ' + databaseUri);
 console.log(' appId: ' + appId);
 console.log(' masterKey: ' + masterKey); // Don't leave this enabled
+console.log(' allowHttp: ' + allowHttp); 
 
 
 
@@ -52,14 +54,22 @@ var api = new ParseServer({
   }
 });
 
-var options = { allowInsecureHTTP: true };
+var options = { allowInsecureHTTP: allowHttp };
 var dashboard = new ParseDashboard({
   "apps": [
     {
-      "serverURL": serverUrlWithPort + "/parse",  // Parse url, not dashboard url!
+      "serverURL": '192.168.25.1:1337/parse', //serverUrlWithPort + '/parse', // Self-hosted Parse Server
       "appId": appId,
       "masterKey": masterKey,
-      "appName": "rpc"
+      "appName": 'rpc',
+      "primaryBackgroundColor": "#FFA500", // Orange
+      "secondaryBackgroundColor": "#FF4500" // OrangeRed
+    }
+  ],  
+  "users": [
+    {
+      "user":"saraiza",
+      "pass":"f*ckingpassword"
     }
   ]
 }, options);
