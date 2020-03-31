@@ -28,6 +28,8 @@ var api = new ParseServer({
 // If you wish you require them, you can set them as options in the initialization above:
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
+
+var options = { allowInsecureHTTP: false };
 var dashboard = new ParseDashboard({
   "apps": [
     {
@@ -37,7 +39,7 @@ var dashboard = new ParseDashboard({
       "appName": "MyApp"
     }
   ]
-});
+}, options);
 
 var app = express();
 
