@@ -14,9 +14,9 @@ if (!databaseUri) {
 var api = new ParseServer({
   databaseURI: databaseUri || 'mongodb://mongolab-cubic-14202:27017/dev',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
-  appId: process.env.APP_ID || 'myAppId',
-  masterKey: process.env.MASTER_KEY || '', //Add your master key here. Keep it secret!
-  serverURL: process.env.SERVER_URL || 'https://apocalypse-rock-paper-scissors.herokuapp.com/:1337/parse',
+  appId: process.env.APP_ID || 'app',
+  masterKey: process.env.MASTER_KEY || 'master', //Add your master key here. Keep it secret!
+  serverURL: process.env.SERVER_URL || 'https://apocalypse-rock-paper-scissors.herokuapp.com:1337/parse',
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
