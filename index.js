@@ -23,6 +23,7 @@ var serverUrlWithPort = serverUrlBase + ":" + port;
 // Handy dumpage for now
 console.log('Env Variables:');
 console.log(' process.env.SERVER_URL: ' + process.env.SERVER_URL);
+console.log(' process.env.PORT: ' + process.env.PORT);
 console.log(' process.env.DATABASE_URI: ' + process.env.DATABASE_URI);
 console.log(' process.env.MONGODB_URI: ' + process.env.MONGODB_URI);
 console.log('')
