@@ -60,7 +60,8 @@ var options = { allowInsecureHTTP: allowHttp };
 var dashboard = new ParseDashboard({
   "apps": [
     {
-      "serverURL": serverUrlWithPort + '/parse', // Self-hosted Parse Server
+      //"serverURL": serverUrlWithPort + '/parse', // Self-hosted Parse Server
+      "serverURL": serverUrlBase + '/parse', // Self-hosted Parse Server
       "appId": appId,
       "masterKey": masterKey,
       "appName": 'rpc'
