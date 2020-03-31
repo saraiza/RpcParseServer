@@ -9,32 +9,46 @@ var path = require('path');
 
 // Default db and server settings are for local dev. Heroku server
 // provides environment variables to override.
+var bProduction = process.env.PRODUCTION || false
 var port = process.env.PORT || 1337; // For the Heroku server, you want to use the given port. 
-var serverUrlBase = process.env.SERVER_URL || "https://localhost"; 
+var server = process.env.SERVER || "localhost";   // prefix is separate
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/dev';
 var appId = process.env.APP_ID || 'myAppId'
 var masterKey = process.env.MASTER_KEY || '_the_master_key'
-var allowHttp = process.env.ALLOW_HTTP || true
 
+// Production or dev? We will generate some strings accordingly
+var urlParseInternal = ''
+var urlParseExternal = ''
+var bAllowHttp = false
+if(bProduction) {
+  urlParseInternal = 'https://' + server + ':' + port
+  urlParseExternal = 'https://' + server
+  bAllowHttp = false
+} 
+else {
+  // local development work
+  urlParseInternal = 'http://' + server + ':' + port
+  urlParseExternal = urlParseInternal
+  bAllowHttp = true
+}
 
-// With the port appended
-var serverUrlWithPort = serverUrlBase + ":" + port;
 
 // Handy dumpage for now
 console.log('Env Variables:');
-console.log(' process.env.SERVER_URL: ' + process.env.SERVER_URL);
+console.log(' process.env.PRODUCTION: ' + process.env.PRODUCTION);
+console.log(' process.env.SERVER: ' + process.env.SERVER);
 console.log(' process.env.PORT: ' + process.env.PORT);
 console.log(' process.env.DATABASE_URI: ' + process.env.DATABASE_URI);
 console.log(' process.env.MONGODB_URI: ' + process.env.MONGODB_URI);
 console.log('')
 console.log('Resolved Parameters:');
 console.log(' port: ' + port);
-console.log(' serverUrlBase: ' + serverUrlBase);
-console.log(' serverUrlWithPort: ' + serverUrlWithPort);
+console.log(' urlParseInternal: ' + urlParseInternal);
+console.log(' urlParseExternal: ' + urlParseExternal);
 console.log(' databaseUri: ' + databaseUri);
 console.log(' appId: ' + appId);
 console.log(' masterKey: ' + masterKey); // Don't leave this enabled
-console.log(' allowHttp: ' + allowHttp); 
+console.log(' bAllowHttp: ' + bAllowHttp); 
 
 
 
@@ -49,19 +63,18 @@ var api = new ParseServer({
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: appId,
   masterKey: masterKey, //Add your master key here. Keep it secret!
-  serverURL: serverUrlWithPort + '/parse',
+  serverURL: urlParseInternal + '/parse',
   fileKey: 'optionalFileKey',
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
 });
 
-var options = { allowInsecureHTTP: allowHttp };
+var options = { allowInsecureHTTP: bAllowHttp };
 var dashboard = new ParseDashboard({
   "apps": [
     {
-      //"serverURL": serverUrlWithPort + '/parse', // Self-hosted Parse Server
-      "serverURL": serverUrlBase + '/parse', // Self-hosted Parse Server
+      "serverURL": urlParseExternal + '/parse', // Self-hosted Parse Server
       "appId": appId,
       "masterKey": masterKey,
       "appName": 'rpc'
