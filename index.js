@@ -10,7 +10,7 @@ var path = require('path');
 // Default db and server settings are for local dev. Heroku server
 // provides environment variables to override.
 var port = process.env.PORT || 1337; // For the Heroku server, you want to use the given port. 
-var serverUrlBase = process.env.SERVER_URL || "http://localhost"; // || 'https://apocalypse-rock-paper-scissors.herokuapp.com';
+var serverUrlBase = process.env.SERVER_URL || "https://localhost"; 
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/dev';
 var appId = process.env.APP_ID || 'myAppId'
 var masterKey = process.env.MASTER_KEY || '_the_master_key'
