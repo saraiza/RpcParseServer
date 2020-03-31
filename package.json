@@ -1,11 +1,11 @@
 {
-  "name": "parse-server-example",
+  "name": "rpc-parse-server",
   "version": "1.4.0",
-  "description": "An example Parse API server using the parse-server module",
+  "description": "Parse Server for the Rock Paper Scissors game",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ParsePlatform/parse-server-example"
+    "url": "https://github.com/saraiza/RpcParseServer"
   },
   "license": "MIT",
   "dependencies": {
@@ -19,6 +19,6 @@
     "start": "node index.js"
   },
   "engines": {
-    "node": ">=4.3"
+    "node": "12.16.x"
   }
 }

@@ -9,11 +9,11 @@ var path = require('path');
 
 // Default db and server settings are for local dev. Heroku server
 // provides environment variables to override.
-var port = process.env.PORT || 1337;
+var port = process.env.PORT || 1337; // For the Heroku server, you want to use the given port. 
 var serverUrlBase = process.env.SERVER_URL || "http://localhost"; // || 'https://apocalypse-rock-paper-scissors.herokuapp.com';
 var databaseUri = process.env.DATABASE_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/dev';
 var appId = process.env.APP_ID || 'myAppId'
-var masterKey = process.env.MASTER_KEY || ''
+var masterKey = process.env.MASTER_KEY || '_the_master_key'
 var allowHttp = process.env.ALLOW_HTTP || true
 
 
@@ -50,6 +50,7 @@ var api = new ParseServer({
   appId: appId,
   masterKey: masterKey, //Add your master key here. Keep it secret!
   serverURL: serverUrlWithPort + '/parse',
+  fileKey: 'optionalFileKey',
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
@@ -62,9 +63,7 @@ var dashboard = new ParseDashboard({
       "serverURL": serverUrlWithPort + '/parse', // Self-hosted Parse Server
       "appId": appId,
       "masterKey": masterKey,
-      "appName": 'rpc',
-      "primaryBackgroundColor": "#FFA500", // Orange
-      "secondaryBackgroundColor": "#FF4500" // OrangeRed
+      "appName": 'rpc'
     }
   ],  
   "users": [
