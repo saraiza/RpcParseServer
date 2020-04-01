@@ -23,7 +23,7 @@ var bAllowHttp = false
 if(bProduction) {
   urlParseInternal = 'https://' + server + ':' + port
   urlParseExternal = 'https://' + server
-  bAllowHttp = false
+  bAllowHttp = true
 } 
 else {
   // local development work
