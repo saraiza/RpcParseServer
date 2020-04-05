@@ -5,18 +5,10 @@ Parse.Cloud.define('hello', function(req, res) {
 });
 
 
-Parse.Cloud.define('checkgame', function(req, res) {
-  return 'game was processed';
-});
+function processOneGame(gameId) {
+  
+}
 
-
-Parse.Cloud.afterSave("GameScore", (request) => {
-  console.log("GameScore afterSave function triggered")
-});
-
-Parse.Cloud.afterSave("User", (request) => {
-  console.log("User afterSave function triggered")
-});
 
 Parse.Cloud.afterSave("GameV1", (request) => {
   console.log("GameV1 afterSave function triggered")
