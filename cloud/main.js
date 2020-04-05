@@ -21,16 +21,8 @@ Parse.Cloud.afterSave("User", (request) => {
 Parse.Cloud.afterSave("GameV1", (request) => {
   console.log("GameV1 afterSave function triggered")
 
-  var FooBar = Parse.Object.extend("FooBar");
-  var fooBar = new FooBar();
-  fooBar.destroy().then((foos)=> {
-    console.log("foos d")
-  })
-
-  
+  // Get the choices from the table
   const query = new Parse.Query("GameV1");
-  
-  // 
   const results = query.find().then(function(results) {
     let map = new Map()
     var len = results.length
@@ -84,16 +76,43 @@ Parse.Cloud.afterSave("GameV1", (request) => {
         winner = "draw"
 
       console.log("winner: " + winner)
-      // Remove all the entries from the table
-      // Add one entry with the result
       
-      var Game = Parse.Object.extend("Winner");
-      var game = new Game();
-      game.set("username", winner)
-      game.save()
+      // Remove all the entries from the table
+      query.find().then(function(results) {
+        return Parse.Object.destroyAll(results);
+      }).then(function() {
+        console.log("emptied game table")
+      }, function(error) {
+        console.log("ERROR: while trying to empty game table")
+      });
 
+      // Empty the Winner table
+      const queryWinners = new Parse.Query("Winner");
+      queryWinners.find().then(function(allWinners) {
+        return Parse.Object.destroyAll(allWinners);
+      }).then(function() {
+        console.log("emptied Winner table")
+      }, function(error) {
+        console.log("ERROR: while trying to empty Winner table")
+      });
+
+      // Write the result to the Winner table
+      var WinnerTable = Parse.Object.extend("Winner");
+      var winnerTable = new WinnerTable();
+      winnerTable.set("winner", winner)
+      winnerTable.set("usr1", usr1)
+      winnerTable.set("choice1", choice1)
+      winnerTable.set("usr2", usr2)
+      winnerTable.set("choice2", choice2)
+      winnerTable.save().then(function() {
+        console.log("saved changes to winner table")
+      })
+
+      console.log("Game has been resolved")
       return;
     }
+
+    console.log("no winner yet")
   })
   .catch(function(error) {
     console.error("Got an error " + error.code + " : " + error.message);
