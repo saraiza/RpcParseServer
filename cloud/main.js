@@ -116,5 +116,8 @@ Parse.Cloud.afterSave("GameV1", (request) => {
     for (let [gamdId, arr] of mapGameIDs) 
       processOneGame(arr)
       console.log("GameV1 afterSave function completed")
+  }, function(e) {
+    // not called
+    console.error('parse query rejected', e);
   })
 })
