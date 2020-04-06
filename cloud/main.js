@@ -95,8 +95,10 @@ Parse.Cloud.afterSave("GameV1", (request) => {
 
   // We are going to process ALL existing games, so get the whole table
   // and presort them into groups by gameId
-  const query = new Parse.Query("GameV1");
+  const query = new Parse.Query("GameV1");  
+  console.log("Running query on GameV1")
   const gameRows = query.find().then(function(gameRows) {
+    console.log("parsing query on GameV1")
     let mapGameIDs = new Map()
     var len = gameRows.length
     for(let i =0; i < gameRows.length; ++i) {
