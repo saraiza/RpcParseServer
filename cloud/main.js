@@ -7,6 +7,7 @@ Parse.Cloud.define('hello', function(req, res) {
 
 function processOneGame(rows) {
   var gameId = rows[0].get("gameId")
+  console.log("Processing choices for game + " + gameId)
   let map = new Map()
   var len = rows.length
   if(1 == len) {
@@ -84,6 +85,8 @@ function processOneGame(rows) {
   Parse.Object.destroyAll(rows).then(function(removed) {
     console.log("removed rows from GameV1 table for gameId " + gameId)
   })
+  
+  console.log("game " + gameId + " is complete")
 }
 
 
@@ -109,7 +112,7 @@ Parse.Cloud.afterSave("GameV1", (request) => {
     }
 
     for (let [gamdId, arr] of mapGameIDs) 
-      processOneGame(arr)      
-
+      processOneGame(arr)
+      console.log("GameV1 afterSave function completed")
   })
 })
