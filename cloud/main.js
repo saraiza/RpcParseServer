@@ -97,7 +97,7 @@ Parse.Cloud.afterSave("GameV1", (request) => {
   // and presort them into groups by gameId
   const query = new Parse.Query("GameV1");  
   console.log("Running query on GameV1")
-  const gameRows = query.find().then(function(gameRows) {
+  const gameRows = query.find({useMasterKey:true}).then(function(gameRows) {
     console.log("parsing query on GameV1")
     let mapGameIDs = new Map()
     var len = gameRows.length
@@ -116,8 +116,5 @@ Parse.Cloud.afterSave("GameV1", (request) => {
     for (let [gamdId, arr] of mapGameIDs) 
       processOneGame(arr)
       console.log("GameV1 afterSave function completed")
-  }, function(e) {
-    // not called
-    console.error('parse query rejected', e);
   })
 })
