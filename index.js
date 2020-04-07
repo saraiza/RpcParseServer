@@ -19,16 +19,19 @@ var masterKey = process.env.MASTER_KEY || '_the_master_key'
 // Production or dev? We will generate some strings accordingly
 var urlParseInternal = ''
 var urlParseExternal = ''
+var urlParsePublic = ''
 var bAllowHttp = false
 if(bProduction) {
   urlParseInternal = 'https://' + server + ':' + port
   urlParseExternal = 'https://' + server
-  bAllowHttp = true
+  urlParsePublic   = 'https://' + server
+  bAllowHttp = true  // DON'T FORGET TO MAKE THIS FALSE!
 } 
 else {
   // local development work
   urlParseInternal = 'http://' + server + ':' + port
   urlParseExternal = urlParseInternal
+  urlParsePublic   = 'http://' + server + ':' + port
   bAllowHttp = true
 }
 
@@ -45,6 +48,7 @@ console.log('Resolved Parameters:');
 console.log(' port: ' + port);
 console.log(' urlParseInternal: ' + urlParseInternal);
 console.log(' urlParseExternal: ' + urlParseExternal);
+console.log(' urlParsePublic: ' + urlParsePublic);
 console.log(' databaseUri: ' + databaseUri);
 console.log(' appId: ' + appId);
 console.log(' masterKey: ' + masterKey); // Don't leave this enabled
@@ -64,7 +68,13 @@ var api = new ParseServer({
   appId: appId,
   masterKey: masterKey, //Add your master key here. Keep it secret!
   serverURL: urlParseInternal + '/parse',
+  publicServerURL: urlParsePublic,
   fileKey: 'optionalFileKey',
+  revokeSessionOnPasswordReset: false,
+  verbose: true,
+  logLevel: "debug",
+  port: port,
+  enableAnonymousUsers: true, // DISABLE THIS
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
@@ -74,7 +84,7 @@ var options = { allowInsecureHTTP: bAllowHttp };
 var dashboard = new ParseDashboard({
   "apps": [
     {
-      "serverURL": urlParseExternal + '/parse', // Self-hosted Parse Server
+      "serverURL": urlParseInternal + '/parse', // Self-hosted Parse Server
       "appId": appId,
       "masterKey": masterKey,
       "appName": 'rpc'
