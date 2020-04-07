@@ -22,14 +22,14 @@ var urlParseExternal = ''
 var urlParsePublic = ''
 var bAllowHttp = false
 if(bProduction) {
-  urlParseInternal = 'https://' + server + ':' + port
+  urlParseInternal = 'http://localhost:' + port
   urlParseExternal = 'https://' + server
   urlParsePublic   = 'https://' + server
   bAllowHttp = true  // DON'T FORGET TO MAKE THIS FALSE!
 } 
 else {
   // local development work
-  urlParseInternal = 'http://' + server + ':' + port
+  urlParseInternal = 'http://localhost:' + port
   urlParseExternal = urlParseInternal
   urlParsePublic   = 'http://' + server + ':' + port
   bAllowHttp = true
