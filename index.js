@@ -62,7 +62,7 @@ console.log(' bAllowHttp: ' + bAllowHttp);
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
 
-var api = new ParseServer({
+var parse = new ParseServer({
   databaseURI: databaseUri,// || 'mongodb://mongolab-cubic-14202:27017/dev'
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: appId,
@@ -104,12 +104,12 @@ var app = express();
 app.use('/public', express.static(path.join(__dirname, '/public')));
 
 // Serve the Parse API on the /parse URL prefix
-app.use('/parse', api);
+app.use('/parse', parse);
 app.use('/dashboard', dashboard);
 
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
-  res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!');
+  res.status(200).send('I sure wish I had a cookie');
 });
 
 // There will be a test page available on the /test path of your server url
