@@ -65,7 +65,7 @@ var parse = new ParseServer({
   //revokeSessionOnPasswordReset: false,
   //verbose: true,
   //logLevel: "debug",
-  port: port,
+  //port: port,
   //enableAnonymousUsers: true, // DISABLE THIS
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
