@@ -18,19 +18,16 @@ var masterKey = process.env.MASTER_KEY || '_the_master_key'
 
 // Production or dev? We will generate some strings accordingly
 var urlParseInternal = ''
-var urlParseExternal = ''
 var urlParsePublic = ''
 var bAllowHttp = false
 if(bProduction) {
   urlParseInternal = 'http://localhost:' + port
-  urlParseExternal = 'https://' + server
   urlParsePublic   = 'https://' + server
   bAllowHttp = true  // DON'T FORGET TO MAKE THIS FALSE!
 } 
 else {
   // local development work
   urlParseInternal = 'http://localhost:' + port
-  urlParseExternal = urlParseInternal
   urlParsePublic   = 'http://' + server + ':' + port
   bAllowHttp = true
 }
@@ -47,7 +44,6 @@ console.log('')
 console.log('Resolved Parameters:');
 console.log(' port: ' + port);
 console.log(' urlParseInternal: ' + urlParseInternal);
-console.log(' urlParseExternal: ' + urlParseExternal);
 console.log(' urlParsePublic: ' + urlParsePublic);
 console.log(' databaseUri: ' + databaseUri);
 console.log(' appId: ' + appId);
@@ -68,7 +64,7 @@ var parse = new ParseServer({
   appId: appId,
   masterKey: masterKey, //Add your master key here. Keep it secret!
   serverURL: urlParseInternal + '/parse',
-  publicServerURL: urlParsePublic,
+  //publicServerURL: urlParsePublic  // Breaks deleting items from tables
   fileKey: 'optionalFileKey',
   revokeSessionOnPasswordReset: false,
   verbose: true,
