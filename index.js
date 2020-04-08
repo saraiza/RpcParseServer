@@ -22,13 +22,13 @@ var urlParsePublic = ''
 var bAllowHttp = false
 if(bProduction) {
   urlParseInternal = 'http://localhost:' + port
-  urlParsePublic   = 'https://' + server
-  bAllowHttp = true  // DON'T FORGET TO MAKE THIS FALSE!
+  urlParsePublic = 'https://' + server
+  bAllowHttp = true
 } 
 else {
   // local development work
-  urlParseInternal = 'http://localhost:' + port
-  urlParsePublic   = 'http://' + server + ':' + port
+  urlParseInternal = 'https://localhost:' + port
+  urlParsePublic = urlParseInternal
   bAllowHttp = true
 }
 
@@ -58,29 +58,23 @@ console.log(' bAllowHttp: ' + bAllowHttp);
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
 
-var parse = new ParseServer({
+var parseServer = new ParseServer({
   databaseURI: databaseUri,// || 'mongodb://mongolab-cubic-14202:27017/dev'
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: appId,
   masterKey: masterKey, //Add your master key here. Keep it secret!
   serverURL: urlParseInternal + '/parse',
-  //publicServerURL: urlParsePublic  // Breaks deleting items from tables
   fileKey: 'optionalFileKey',
-  revokeSessionOnPasswordReset: false,
-  verbose: true,
-  logLevel: "debug",
-  port: port,
-  enableAnonymousUsers: true, // DISABLE THIS
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
 });
 
 var options = { allowInsecureHTTP: bAllowHttp };
-var dashboard = new ParseDashboard({
+var parseDashboard = new ParseDashboard({
   "apps": [
     {
-      "serverURL": urlParseInternal + '/parse', // Self-hosted Parse Server
+      "serverURL": urlParsePublic + '/parse', // Self-hosted Parse Server
       "appId": appId,
       "masterKey": masterKey,
       "appName": 'rpc'
@@ -100,12 +94,12 @@ var app = express();
 app.use('/public', express.static(path.join(__dirname, '/public')));
 
 // Serve the Parse API on the /parse URL prefix
-app.use('/parse', parse);
-app.use('/dashboard', dashboard);
+app.use('/parse', parseServer);
+app.use('/dashboard', parseDashboard);
 
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
-  res.status(200).send('I sure wish I had a cookie');
+  res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!');
 });
 
 // There will be a test page available on the /test path of your server url
