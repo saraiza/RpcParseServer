@@ -118,3 +118,24 @@ Parse.Cloud.afterSave("GameV1", (request) => {
       console.log("GameV1 afterSave function completed")
   })
 })
+
+
+
+
+Parse.Cloud.afterSave("Test", (request) => {
+  console.log("Test afterSave function triggered")
+  console.log("Executing query")
+
+  const query = new Parse.Query("Test");  
+  console.log("Running query on Test")
+  const results = query.find({useMasterKey:true}).then(function(results) {
+    console.log("received results from Test")
+    console.log("results are:")
+    console.log(results)
+    console.log("And those were the results!")
+  })
+
+
+  console.log("Leaving cloud function")
+})
+

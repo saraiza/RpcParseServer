@@ -18,17 +18,17 @@ var masterKey = process.env.MASTER_KEY || '_the_master_key'
 
 // Production or dev? We will generate some strings accordingly
 var urlParseInternal = ''
-var urlParseExternal = ''
+var urlParsePublic = ''
 var bAllowHttp = false
 if(bProduction) {
-  urlParseInternal = 'https://' + server + ':' + port
-  urlParseExternal = 'https://' + server
+  urlParseInternal = 'https://localhost:' + port
+  urlParsePublic = 'https://' + server
   bAllowHttp = true
 } 
 else {
   // local development work
-  urlParseInternal = 'http://' + server + ':' + port
-  urlParseExternal = urlParseInternal
+  urlParseInternal = 'https://localhost:' + port
+  urlParsePublic = urlParseInternal
   bAllowHttp = true
 }
 
@@ -44,7 +44,7 @@ console.log('')
 console.log('Resolved Parameters:');
 console.log(' port: ' + port);
 console.log(' urlParseInternal: ' + urlParseInternal);
-console.log(' urlParseExternal: ' + urlParseExternal);
+console.log(' urlParsePublic: ' + urlParsePublic);
 console.log(' databaseUri: ' + databaseUri);
 console.log(' appId: ' + appId);
 console.log(' masterKey: ' + masterKey); // Don't leave this enabled
@@ -58,7 +58,7 @@ console.log(' bAllowHttp: ' + bAllowHttp);
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
 
-var api = new ParseServer({
+var parseServer = new ParseServer({
   databaseURI: databaseUri,// || 'mongodb://mongolab-cubic-14202:27017/dev'
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: appId,
@@ -71,10 +71,10 @@ var api = new ParseServer({
 });
 
 var options = { allowInsecureHTTP: bAllowHttp };
-var dashboard = new ParseDashboard({
+var parseDashboard = new ParseDashboard({
   "apps": [
     {
-      "serverURL": urlParseExternal + '/parse', // Self-hosted Parse Server
+      "serverURL": urlParsePublic + '/parse', // Self-hosted Parse Server
       "appId": appId,
       "masterKey": masterKey,
       "appName": 'rpc'
@@ -94,8 +94,8 @@ var app = express();
 app.use('/public', express.static(path.join(__dirname, '/public')));
 
 // Serve the Parse API on the /parse URL prefix
-app.use('/parse', api);
-app.use('/dashboard', dashboard);
+app.use('/parse', parseServer);
+app.use('/dashboard', parseDashboard);
 
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
