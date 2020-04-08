@@ -118,9 +118,3 @@ Parse.Cloud.afterSave("GameV1", (request) => {
       console.log("GameV1 afterSave function completed")
   })
 })
-
-
-
-
-
-

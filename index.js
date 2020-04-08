@@ -18,14 +18,17 @@ var masterKey = process.env.MASTER_KEY || '_the_master_key'
 
 // Production or dev? We will generate some strings accordingly
 var urlParseInternal = ''
+var urlParseExternal = ''
 var bAllowHttp = false
 if(bProduction) {
-  urlParseInternal = 'http://localhost:' + port
-  bAllowHttp = true  // DON'T FORGET TO MAKE THIS FALSE!
+  urlParseInternal = 'https://' + server + ':' + port
+  urlParseExternal = 'https://' + server
+  bAllowHttp = true
 } 
 else {
   // local development work
-  urlParseInternal = 'http://localhost:' + port
+  urlParseInternal = 'http://' + server + ':' + port
+  urlParseExternal = urlParseInternal
   bAllowHttp = true
 }
 
@@ -41,6 +44,7 @@ console.log('')
 console.log('Resolved Parameters:');
 console.log(' port: ' + port);
 console.log(' urlParseInternal: ' + urlParseInternal);
+console.log(' urlParseExternal: ' + urlParseExternal);
 console.log(' databaseUri: ' + databaseUri);
 console.log(' appId: ' + appId);
 console.log(' masterKey: ' + masterKey); // Don't leave this enabled
@@ -54,19 +58,13 @@ console.log(' bAllowHttp: ' + bAllowHttp);
 // javascriptKey, restAPIKey, dotNetKey, clientKey
 
 
-var parse = new ParseServer({
+var api = new ParseServer({
   databaseURI: databaseUri,// || 'mongodb://mongolab-cubic-14202:27017/dev'
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: appId,
   masterKey: masterKey, //Add your master key here. Keep it secret!
   serverURL: urlParseInternal + '/parse',
-  //publicServerURL: urlParsePublic  // Breaks deleting items from tables
   fileKey: 'optionalFileKey',
-  //revokeSessionOnPasswordReset: false,
-  //verbose: true,
-  //logLevel: "debug",
-  //port: port,
-  //enableAnonymousUsers: true, // DISABLE THIS
   liveQuery: {
     classNames: ["Posts", "Comments"] // List of classes to support for query subscriptions
   }
@@ -76,7 +74,7 @@ var options = { allowInsecureHTTP: bAllowHttp };
 var dashboard = new ParseDashboard({
   "apps": [
     {
-      "serverURL": urlParseInternal + '/parse', // Self-hosted Parse Server
+      "serverURL": urlParseExternal + '/parse', // Self-hosted Parse Server
       "appId": appId,
       "masterKey": masterKey,
       "appName": 'rpc'
@@ -96,12 +94,12 @@ var app = express();
 app.use('/public', express.static(path.join(__dirname, '/public')));
 
 // Serve the Parse API on the /parse URL prefix
-app.use('/parse', parse);
+app.use('/parse', api);
 app.use('/dashboard', dashboard);
 
 // Parse Server plays nicely with the rest of your web routes
 app.get('/', function(req, res) {
-  res.status(200).send('I sure wish I had a cookie');
+  res.status(200).send('I dream of being a website.  Please star the parse-server repo on GitHub!');
 });
 
 // There will be a test page available on the /test path of your server url
