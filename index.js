@@ -21,7 +21,7 @@ var urlParseInternal = ''
 var urlParsePublic = ''
 var bAllowHttp = false
 if(bProduction) {
-  urlParseInternal = 'https://localhost:' + port
+  urlParseInternal = 'http://localhost:' + port
   urlParsePublic = 'https://' + server
   bAllowHttp = true
 } 
